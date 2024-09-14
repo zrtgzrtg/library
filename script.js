@@ -7,9 +7,9 @@
    const htmlTable = document.querySelector(".table")
    const body = document.querySelector("body")
 
-   addNewBookObject(new Book("a","a-author",25,false,myLibrary.length))
-   addNewBookObject(new Book("b","b-author",35,false,myLibrary.length))
-   addNewBookObject(new Book("c","c-author",45,true,myLibrary.length))
+  addNewBook("a","a-author",25,false,myLibrary.length)
+  addNewBook("b","b-author",35,false,myLibrary.length)
+  addNewBook("c","c-author",45,true,myLibrary.length)
 
  function Book(title, author, numPages, alreadyRead, id) {
        this.title = title
