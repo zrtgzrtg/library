@@ -1,6 +1,6 @@
  
    const myLibrary = []
-   const myIds = new Set()
+   let myIds = new Set()
     let counter = 0
 
 
@@ -24,8 +24,6 @@
 
    function updateTable() {
     myLibrary.forEach((book) => {
-        console.log(myIds)
-        console.log(book.id)
         if(!myIds.has(book.id)){
         displayBook(book, counter)
         counter++
@@ -51,6 +49,13 @@
     remButton.textContent = "Remove Book"
     tdRemButton.appendChild(remButton)
     dispBookSelected.appendChild(tdRemButton)
+
+    const changeReadButton = document.createElement("button")
+    const tdChangeReadButton = document.createElement("td")
+    changeReadButton.setAttribute("class","change-read-button")
+    changeReadButton.textContent = "alreadyRead?"
+    tdChangeReadButton.appendChild(changeReadButton)
+    dispBookSelected.appendChild(tdChangeReadButton)
    }
    function displayBookHelp(bookProp) {
     let tdChild = document.createElement("td")
@@ -118,13 +123,48 @@
    }
    function addNewBookObject(book) {
     myLibrary.push(book)
+    resetTable()
     updateTable()
     myIds.add(book.id)
    }
    function listenerTable() {
     htmlTable.addEventListener("click", (event)=> {
+      if(event.target.className === "rem-button") {
         const parent = event.target.parentElement.parentElement
         let remId = parent.className.slice(3)
+        myLibrary.splice(remId,1)
+        myIds.delete(myLibrary.length-1)
+        myLibrary.forEach((elem,index) => {
+          elem.id = index
+        })
+        console.log(myLibrary)
+        resetTable()
+        updateTable()}
+        else {
+        const parent = event.target.parentElement.parentElement
+        let changeId = parent.className.slice(3)
+        let currentState = myLibrary[changeId].alreadyRead
+        myLibrary[changeId].alreadyRead = () => {
+          console.log(currentState)
+          if(currentState===true) {
+            return false
+          }
+          else {
+            return true
+          }
+        }
+        myLibrary[changeId].alreadyRead = myLibrary[changeId].alreadyRead()
+        resetTable()
+        updateTable()
+        }
+    })
+   }
+   function resetTable() {
+    const delRows = Array.from(document.querySelectorAll('[class^="row"]'))
+    counter = 0
+    myIds = new Set()
+    delRows.forEach(elem => {
+      elem.remove()
     })
    }
 
